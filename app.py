@@ -9,7 +9,7 @@ import pytz
 app = Flask(__name__)
 TAIWAN_TZ = pytz.timezone('Asia/Taipei')
 
-CWA_API_KEY = "CWA-DD381EBA-F7A1-41B2-8E5E-4657D957BBAA" 
+CWA_API_KEY = 'YOUR-API-KEY' 
 CWA_BASE_URL = "https://opendata.cwa.gov.tw/api/v1/rest/datastore"
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s') 
