@@ -47,7 +47,7 @@
 
 1.  **複製專案：**
     ```bash
-    git clone [https://github.com/Eugene526/Weather-Dashboard.git](https://github.com/您的用戶名/Weather-Dashboard.git)
+    git clone https://github.com/Eugene526/Weather-Dashboard.git
     cd Weather-Dashboard
     ```
 2.  **建立並啟用虛擬環境 (推薦)：**
