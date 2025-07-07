@@ -8,7 +8,7 @@ import pytz
 
 app = Flask(__name__)
 TAIWAN_TZ = pytz.timezone('Asia/Taipei')
-
+// 在這裡填入你的中央氣象署apikey
 CWA_API_KEY = 'YOUR-API-KEY' 
 CWA_BASE_URL = "https://opendata.cwa.gov.tw/api/v1/rest/datastore"
 
