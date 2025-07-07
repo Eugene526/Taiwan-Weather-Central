@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>全面天氣觀測網</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    <link rel="stylesheet" href="https://unpkg.com/maplibre-gl/dist/maplibre-gl.css">
+</head>
+<body>
+    <header>
+        <h1>全面天氣觀測網</h1>
+        <nav>
+            <ul>
+                <li><a href="#current-weather">即時天氣總覽</a></li>
+                <li><a href="#typhoon">颱風追蹤</a></li>
+                <li><a href="#forecast">即時觀測圖</a></li> <li><a href="#alerts">災害示警</a></li> </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="current-weather">
+            <h2>各地天氣概況 (點擊縣市查看詳細預報)</h2>
+            <p id="loading-weather-message" class="loading-message">載入各地天氣預報中，請稍候...</p>
+            <div id="all-weather-display" class="weather-accordion-container">
+                </div>
+        </section>
+        
+        <section id="typhoon">
+            <h2>颱風追蹤中心</h2>
+            <p id="loading-typhoon-message" class="loading-message">載入颱風路徑潛勢預報中，請稍候...</p>
+            
+            <div id="typhoon-map" style="height: 600px; width: 100%; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 20px;"></div>
+
+            <div id="typhoon-display" class="typhoon-accordion-container">
+                <p>目前無發布中的熱帶氣旋路徑潛勢預報。</p> </div>
+        </section>
+
+        <section id="forecast">
+            <h2>即時觀測圖</h2>
+            <h3>本圖資約每10分鐘更新一次</h3>
+            <div class="image-container">
+                <div class="image-item">
+                    <h4>雷達回波圖</h4>
+                    <img src="{{ radar_url }}" alt="雷達回波圖" style="max-width: 100%; height: auto; border-radius: 4px;">
+                    <p class="source">出處：<a href="https://www.cwa.gov.tw/" target="_blank" rel="noopener noreferrer">中央氣象署</a></p>
+                </div>
+                <div class="image-item">
+                    <h4>衛星雲圖</h4>
+                    <img src="{{ satellite_url }}" alt="衛星雲圖" style="max-width: 100%; height: auto; border-radius: 4px;">
+                    <p class="source">出處：<a href="https://www.cwa.gov.tw/" target="_blank" rel="noopener noreferrer">中央氣象署</a></p>
+                </div>
+            </div>
+        </section>
+
+        <section id="alerts">
+            <h2>災害示警與特報</h2>
+            {% if alerts %}
+                <div class="alerts-container">
+                {% for alert in alerts %}
+                    <div class="alert-card alert-{{ alert.severity | lower }}">
+                        <h3>{{ alert.title }}</h3>
+                        <p class="alert-time">發布時間：{{ alert.issueTime }}</p>
+                        <div class="alert-content">
+                            <p>{{ alert.info | safe }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+            {% else %}
+                <p>目前無已發布的天氣警特報。</p>
+            {% endif %}
+        </section>
+        </main>
+
+    <footer>
+        <p>© 2025 全面天氣觀測網。資料來源：中央氣象署開放資料平台。</p>
+    </footer>
+
+    <script src="https://unpkg.com/maplibre-gl/dist/maplibre-gl.js"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
