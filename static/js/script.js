@@ -41,12 +41,35 @@ document.addEventListener('DOMContentLoaded', () => {
         typhoonSectionTitle.classList.toggle('active');
     });
 
-    function initMapLibre() {
+    async function initMapLibre() {
         const taiwanCenter = [120.9, 23.6]; 
+        let stadiaApiKey = null;
+
+        try {
+            const response = await fetch('/api/stadia-key');
+            if (response.ok) {
+                const data = await response.json();
+                stadiaApiKey = data.key;
+            } else {
+                console.error('無法從後端獲取 Stadia API Key:', response.statusText);
+            }
+        } catch (error) {
+            console.error('請求 Stadia API Key 失敗:', error);
+        }
+
+        if (!stadiaApiKey) {
+            console.error('Stadia API Key 未載入，地圖可能無法正常顯示。');
+            const mapContainer = document.getElementById('typhoon-map');
+            if (mapContainer) {
+                mapContainer.innerHTML = '<p style="color: red; text-align: center; margin-top: 50px;">無法載入地圖，Stadia API Key 遺失或設定錯誤。</p>';
+                mapContainer.style.backgroundColor = '#f0f0f0';
+            }
+            return;
+        }
 
         map = new maplibregl.Map({
             container: 'typhoon-map',
-            style: 'https://tiles.stadiamaps.com/styles/osm_bright.json',
+            style: `https://tiles.stadiamaps.com/styles/osm_bright.json?api_key=${stadiaApiKey}`,
             center: taiwanCenter,
             zoom: 7,
             pitch: 0,
@@ -150,7 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function fetchTyphoonWarning() {
         if (!map) {
-            console.log("MapLibre 地圖尚未初始化，等待載入...");
+            console.error("MapLibre 地圖尚未初始化或 Key 載入失敗，無法獲取颱風資料。");
             return;
         }
 
