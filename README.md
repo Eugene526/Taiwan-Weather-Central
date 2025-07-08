@@ -1,7 +1,7 @@
 # Taiwan Weather Central (TWC)
 
 ## 專案簡介
-全面天氣觀測網是一個綜合性的天氣資訊平台，旨在提供用戶即時、詳細且易於理解的氣象數據。本專案整合了中央氣象署的開放資料，提供台灣各地的天氣預報、即時雷達與衛星影像，以及重要的災害警特報資訊，並具備互動式的颱風路徑追蹤功能。
+TWC是一個綜合性的天氣資訊平台，旨在提供用戶即時、詳細且易於理解的氣象數據。本專案整合了中央氣象署的開放資料，提供台灣各地的天氣預報、即時雷達與衛星影像，以及重要的災害警特報資訊，並具備互動式的颱風路徑追蹤功能。
 
 ## 特色
 
@@ -47,8 +47,8 @@
 
 1.  **複製專案：**
     ```bash
-    git clone https://github.com/Eugene526/Weather-Dashboard.git
-    cd Weather-Dashboard
+    git clone https://github.com/Eugene526/Taiwan-Weather-Central.git
+    cd Taiwan-Weather-Central
     ```
 2.  **建立並啟用虛擬環境 (推薦)：**
     ```bash
@@ -62,7 +62,6 @@
     ```bash
     pip install -r requirements.txt
     ```
-    (請確保您的 `requirements.txt` 檔案包含：`Flask`, `requests`, `pytz`。如果您的 Flask 應用有處理 CORS，可能還需要 `Flask-Cors`。)
 
 4.  **設定中央氣象署 API 金鑰：**
     根據您提供的 `app.py`，中央氣象署的 API 金鑰 (`CWA-DD381EBA-F7A1-41B2-8E5E-4657D957BBAA`) 已經硬編碼在檔案中。如果該金鑰失效或您想使用自己的金鑰，請修改 `app.py` 中的 `CWA_API_KEY` 變數：
