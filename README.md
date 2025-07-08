@@ -69,7 +69,7 @@
     ```python
     CWA_API_KEY = "您的中央氣象署API金鑰"
     ```
-    **注意：** 如果您使用的是 Stadia Maps 的付費服務或需要 API Key 的底圖，請確保該 Key 已在 Vercel 環境變數中設定，或透過 Flask 後端安全地傳遞到前端。如果本地測試時 MapLibre 瓦片載入正常，但在 Vercel 上遇到 401 錯誤，則需在 Vercel 環境變數中設定 `STADIA_API_KEY` 並在前端 JavaScript 中使用它。
+    **注意：** 請把第12行改為CWA_API_KEY = "YOUR_API_KEY"
 
 5.  **運行應用程式：**
     ```bash
