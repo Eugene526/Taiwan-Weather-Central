@@ -1,7 +1,10 @@
 let map;
 let mapPopup; 
+let weatherDataLoaded = false;
+let typhoonDataLoaded = false;
 
 document.addEventListener('DOMContentLoaded', () => {
+    const loadingOverlay = document.getElementById('loading-overlay');
     const allWeatherDisplay = document.getElementById('all-weather-display');
     const loadingWeatherMessage = document.getElementById('loading-weather-message');
     const weatherSectionTitle = document.querySelector('#current-weather h2'); 
@@ -10,9 +13,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const loadingTyphoonMessage = document.getElementById('loading-typhoon-message');
     const typhoonSectionTitle = document.querySelector('#typhoon h2'); 
 
-    initMapLibre();
+    async function initializePageData() {
+        loadingOverlay.classList.remove('hidden'); 
+        await fetchAllLocationsWeather();
+        weatherDataLoaded = true;
+        initMapLibre(); 
+    }
 
-    fetchAllLocationsWeather();
+    initializePageData();
 
     weatherSectionTitle.addEventListener('click', () => {
         const allAccordionItems = allWeatherDisplay.querySelectorAll('.accordion-item');
@@ -70,14 +78,22 @@ document.addEventListener('DOMContentLoaded', () => {
             bearing: 0
         });
 
-        map.on('load', () => {
-            fetchTyphoonWarning();
+        map.on('load', async () => {
+            await fetchTyphoonWarning();
+            typhoonDataLoaded = true;
+            checkAllDataLoaded();
         });
         
         mapPopup = new maplibregl.Popup({
             closeButton: true,
             closeOnClick: false
         });
+    }
+
+    function checkAllDataLoaded() {
+        if (weatherDataLoaded && typhoonDataLoaded) {
+            loadingOverlay.classList.add('hidden');
+        }
     }
 
     async function fetchAllLocationsWeather() {
@@ -101,6 +117,9 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('獲取所有地點天氣資料失敗:', error);
             loadingWeatherMessage.style.display = 'none'; 
             allWeatherDisplay.innerHTML = `<p style="color: red;">無法獲取各地天氣資料: ${error.message}</p>`;
+        } finally {
+            weatherDataLoaded = true;
+            checkAllDataLoaded();
         }
     }
 
@@ -192,6 +211,9 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('獲取颱風路徑潛勢預報資料失敗:', error);
             loadingTyphoonMessage.style.display = 'none'; 
             typhoonDisplay.innerHTML = `<p style="color: red;">無法獲取熱帶氣旋路徑潛勢預報資料: ${error.message}</p>`;
+        } finally {
+            typhoonDataLoaded = true;
+            checkAllDataLoaded();
         }
     }
 
